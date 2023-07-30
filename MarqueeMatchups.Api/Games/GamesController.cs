@@ -1,8 +1,9 @@
 using MarqueeMatchups.Api.Data;
+using MarqueeMatchups.Api.Games;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace MarqueeMatchups.Api.Matches
+namespace MarqueeMatchups.Api.Games
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -11,9 +12,9 @@ namespace MarqueeMatchups.Api.Matches
        
 
         private readonly ILogger<GamesController> _logger;
-        private readonly GameRepository _gameRepository;
+        private readonly IGameRepository _gameRepository;
 
-        public GamesController(ILogger<GamesController> logger,GameRepository gameRepository)
+        public GamesController(ILogger<GamesController> logger,IGameRepository gameRepository)
         {
             _logger = logger;
             _gameRepository = gameRepository;

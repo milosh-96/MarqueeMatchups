@@ -1,4 +1,7 @@
+using MarqueeMatchups.Api.Data;
+using MarqueeMatchups.Api.Games;
 using MarqueeMatchups.Api.Matches;
+using Microsoft.EntityFrameworkCore;
 
 namespace MarqueeMatchups.Api
 {
@@ -9,14 +12,27 @@ namespace MarqueeMatchups.Api
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    cors =>
+                    {
+                        cors.AllowAnyOrigin();
+                    });
+            });
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            builder.Services.AddDbContext<DataDbContext>(options =>
+            {
+             options.UseNpgsql(connectionString);
 
+            });
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             // repositories //
-            builder.Services.AddScoped<GameRepository>();
+            builder.Services.AddScoped<IGameRepository,GameRepository>();
 
             var app = builder.Build();
 
@@ -27,6 +43,7 @@ namespace MarqueeMatchups.Api
                 app.UseSwaggerUI();
             }
 
+            app.UseCors("AllowAll");
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

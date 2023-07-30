@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MarqueeMatchups.Api.Data
 {
@@ -14,8 +15,9 @@ namespace MarqueeMatchups.Api.Data
         }
 
         public int SportId { get; set; }
-        public Sport? Sport { get; set; }
+        public virtual Sport? Sport { get; set; }
 
+        [Required]
         public string Competition { get; set; } = "";
     }
 }

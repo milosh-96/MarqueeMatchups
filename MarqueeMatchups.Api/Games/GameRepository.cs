@@ -1,9 +1,11 @@
 ﻿using MarqueeMatchups.Api.Data;
+using MarqueeMatchups.Api.Games;
 using MarqueeMatchups.Api.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace MarqueeMatchups.Api.Matches
 {
-    public class GameRepository : IGenericRepository<Game,int>
+    public class GameRepository : IGameRepository
     {
         private readonly IEnumerable<Game> Games = new[]
        {
@@ -31,7 +33,19 @@ namespace MarqueeMatchups.Api.Matches
 
         };
 
+        private readonly DataDbContext _dbContext;
+
+        public GameRepository(DataDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         public Game Create(object data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Game?> CreateAsync(object data)
         {
             throw new NotImplementedException();
         }
@@ -41,10 +55,19 @@ namespace MarqueeMatchups.Api.Matches
             throw new NotImplementedException();
         }
 
+        public Task<bool> DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Game> GetAll()
         {
-          
-            return this.Games;
+            return this._dbContext.Set<Game>().ToList();
+        }
+
+        public async Task<IEnumerable<Game>> GetAllAsync()
+        {
+            return await this._dbContext.Set<Game>().ToListAsync();
         }
 
         public Game? GetById(int id)
@@ -52,7 +75,17 @@ namespace MarqueeMatchups.Api.Matches
             return this.Games.Where(x => x.Id == id).FirstOrDefault();
         }
 
+        public async Task<Game?> GetByIdAsync(int id)
+        {
+            return this.GetById(id);
+        }
+
         public Game Update(int id, object data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Game?> UpdateAsync(int id, object data)
         {
             throw new NotImplementedException();
         }
