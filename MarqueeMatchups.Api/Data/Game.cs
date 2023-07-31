@@ -6,14 +6,12 @@ namespace MarqueeMatchups.Api.Data
     public class Game : BaseEntity
     {
         public DateTimeOffset ScheduledAt { get; set; } = DateTimeOffset.UtcNow;
-        private DateTime scheduledAtUtc;
-
+     
         [NotMapped]
-        public DateTime ScheduledAtUtc
+        public DateTime ScheduledAtLocal
         {
-            get { return this.ScheduledAt.UtcDateTime; }
+            get { return this.ScheduledAt.LocalDateTime; }
         }
-
         public int SportId { get; set; }
         public virtual Sport? Sport { get; set; }
 

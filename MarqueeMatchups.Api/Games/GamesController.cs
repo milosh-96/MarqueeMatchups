@@ -1,4 +1,5 @@
 using MarqueeMatchups.Api.Data;
+using MarqueeMatchups.Api.Data.DTO;
 using MarqueeMatchups.Api.Games;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -20,10 +21,11 @@ namespace MarqueeMatchups.Api.Games
             _gameRepository = gameRepository;
         }
 
+        [ProducesResponseType(typeof(IEnumerable<Game>), StatusCodes.Status200OK)]
         [HttpGet(Name = "GetGames")]
-        public IEnumerable<Game> Get()
+        public IActionResult Get()
         {
-            return _gameRepository.GetAll();
+            return new JsonResult(_gameRepository.GetAll());
         }
 
         [ProducesResponseType(typeof(Game), StatusCodes.Status200OK)]
@@ -37,6 +39,21 @@ namespace MarqueeMatchups.Api.Games
             }
             return new JsonResult(game);
     
+        }
+
+
+        [ProducesResponseType(typeof(Game), StatusCodes.Status200OK)]
+        [HttpPost(Name = "CreateGame")]
+        public IActionResult Create([FromBody] GameDto data)
+        {
+            var game = _gameRepository.Create(data);
+            
+            if (game == null)
+            {
+                return new NotFoundResult();
+            }
+            return new JsonResult(game);
+
         }
     }
 }

@@ -1,21 +1,22 @@
-﻿using System.Threading.Tasks;
+﻿using MarqueeMatchups.Api.Data.DTO;
+using System.Threading.Tasks;
 
 namespace MarqueeMatchups.Api.Infrastructure
 {
-    public interface IGenericRepository<T,K> 
+    public interface IGenericRepository<T,Dto,Key> 
     {
-        T? GetById(K id);
+        T? GetById(Key id);
         IEnumerable<T> GetAll();
 
-        T? Create(object data);
-        T? Update(K id,object data);
-        bool Delete(K id);
+        T? Create(Dto data);
+        T? Update(Key id,Dto data);
+        bool Delete(Key id);
         //async
-        Task<T?> GetByIdAsync(K id);
+        Task<T?> GetByIdAsync(Key id);
         Task<IEnumerable<T>> GetAllAsync();
 
-        Task<T?> CreateAsync(object data);
-        Task<T?> UpdateAsync(K id, object data);
-        Task<bool> DeleteAsync(K id);
+        Task<T?> CreateAsync(Dto data);
+        Task<T?> UpdateAsync(Key id, Dto data);
+        Task<bool> DeleteAsync(Key id);
     }
 }

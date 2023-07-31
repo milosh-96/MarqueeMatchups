@@ -20,7 +20,7 @@ namespace MarqueeMatchups.Api
                         cors.AllowAnyOrigin();
                     });
             });
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            var connectionString = builder.Configuration["ConnectionStrings:DefaultConnection"];
             builder.Services.AddDbContext<DataDbContext>(options =>
             {
              options.UseNpgsql(connectionString);
@@ -45,7 +45,7 @@ namespace MarqueeMatchups.Api
 
             app.UseCors("AllowAll");
             app.UseHttpsRedirection();
-
+            app.UseStatusCodePages();
             app.UseAuthorization();
 
 

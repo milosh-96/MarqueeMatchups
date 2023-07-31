@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MarqueeMatchups.Api.Data
 {
@@ -8,6 +9,13 @@ namespace MarqueeMatchups.Api.Data
         [Required]
         public string Name { get; set; }
 
-        public DateTimeOffset CreatedOn { get; set; } = DateTimeOffset.Now;
+        public DateTimeOffset CreatedOn { get; set; } = DateTime.Now.ToUniversalTime();
+       
+        [NotMapped]
+        public DateTime CreatedOnLocal
+        {
+            get { return this.CreatedOn.LocalDateTime; }
+        }
+
     }
 }
