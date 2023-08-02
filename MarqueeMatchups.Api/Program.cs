@@ -2,6 +2,7 @@ using MarqueeMatchups.Api.Data;
 using MarqueeMatchups.Api.Games;
 using MarqueeMatchups.Api.Matches;
 using Microsoft.EntityFrameworkCore;
+using static System.Net.WebRequestMethods;
 
 namespace MarqueeMatchups.Api
 {
@@ -17,6 +18,9 @@ namespace MarqueeMatchups.Api
                 options.AddPolicy("AllowAll",
                     cors =>
                     {
+                        cors.WithOrigins(
+                            new[] { "http://localhost:4200" }
+                            );
                         cors.AllowAnyOrigin();
                     });
             });
