@@ -23,9 +23,15 @@ namespace MarqueeMatchups.Api.Games
 
         [ProducesResponseType(typeof(IEnumerable<Game>), StatusCodes.Status200OK)]
         [HttpGet(Name = "GetGames")]
-        public IActionResult Get()
+        public async Task<IActionResult> Get([FromQuery]SportValues sportId = SportValues.Football)
         {
-            return new JsonResult(_gameRepository.GetAll());
+            ICollection<Game> games = new List<Game>();
+            
+            games = await _gameRepository.GetFutureGamesBySportAsync(sportId);
+
+            return new JsonResult(
+                games.OrderBy(x => x.ScheduledAt).ToList()
+                );
         }
 
         [ProducesResponseType(typeof(Game), StatusCodes.Status200OK)]

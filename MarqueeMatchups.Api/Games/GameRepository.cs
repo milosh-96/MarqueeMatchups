@@ -8,31 +8,7 @@ namespace MarqueeMatchups.Api.Matches
 {
     public class GameRepository : IGameRepository
     {
-        private readonly IEnumerable<Game> Games = new[]
-       {
-             new Game {
-                Id = 1,
-                Name="Everton - Fulham",
-                ScheduledAt = new DateTimeOffset(new DateTime(2023,08,12,16,00,00,DateTimeKind.Local)),
-                SportId=1,
-                Competition="Premier League"
-            },
-            new Game {
-                Id = 2,
-                Name="Chelsea - Liverpool",
-                ScheduledAt = new DateTimeOffset(new DateTime(2023,08,13,17,30,00,DateTimeKind.Local)),
-                SportId=1,
-                Competition="Premier League"
-            },
-             new Game {
-                Id = 3,
-                Name="Manchester United - Wolverhampton",
-                ScheduledAt = new DateTimeOffset(new DateTime(2023,08,14,21,00,00,DateTimeKind.Local)),
-                SportId=1,
-                Competition="Premier League"
-            }
-
-        };
+        
 
         private readonly DataDbContext _dbContext;
 
@@ -90,6 +66,31 @@ namespace MarqueeMatchups.Api.Matches
         public async Task<Game?> GetByIdAsync(int id)
         {
             return await this._dbContext.Set<Game>().Where(x => x.Id == id).FirstOrDefaultAsync();
+        }
+
+        public ICollection<Game> GetFutureGames()
+        {
+            return this._dbContext.Set<Game>()
+                .Where(x => x.ScheduledAt > DateTimeOffset.UtcNow)
+                .ToList();
+        }
+        public async Task<ICollection<Game>> GetFutureGamesAsync()
+        {
+            return await this._dbContext.Set<Game>()
+                .Where(x=>x.ScheduledAt > DateTimeOffset.UtcNow).ToListAsync();
+        }
+
+        public async Task<ICollection<Game>> GetFutureGamesBySportAsync(SportValues sportId = SportValues.Football)
+        {
+            return await this._dbContext.Set<Game>()
+                .Where(x => x.SportId == (int)sportId)
+                .Where(x => x.ScheduledAt > DateTimeOffset.UtcNow)
+                .ToListAsync();
+        }
+
+        public ICollection<Game> GetFutureGamesBySport(SportValues sportId)
+        {
+            throw new NotImplementedException();
         }
 
         public Game Update(int id, GameDto data)

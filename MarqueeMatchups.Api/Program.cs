@@ -1,6 +1,8 @@
 using MarqueeMatchups.Api.Data;
+using MarqueeMatchups.Api.Data.Identity;
 using MarqueeMatchups.Api.Games;
 using MarqueeMatchups.Api.Matches;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using static System.Net.WebRequestMethods;
 
@@ -21,6 +23,10 @@ namespace MarqueeMatchups.Api
                         cors.WithOrigins(
                             new[] { "http://localhost:4200" }
                             );
+                        cors.WithHeaders(new[]
+                        {
+                            "Content-Type"
+                        });
                         cors.AllowAnyOrigin();
                     });
             });
@@ -30,6 +36,11 @@ namespace MarqueeMatchups.Api
              options.UseNpgsql(connectionString);
 
             });
+
+            // add identity
+            builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddEntityFrameworkStores<DataDbContext>();
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -47,14 +58,17 @@ namespace MarqueeMatchups.Api
                 app.UseSwaggerUI();
             }
 
-            app.UseCors("AllowAll");
+           
             app.UseHttpsRedirection();
-            app.UseStatusCodePages();
+            app.UseStaticFiles();
+            app.UseStatusCodePages(); 
+            
+            //cors
+            app.UseCors("AllowAll");
+            //
             app.UseAuthorization();
-
-
             app.MapControllers();
-
+            app.MapFallbackToFile("index.html");
             app.Run();
         }
     }
