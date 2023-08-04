@@ -3,6 +3,7 @@ using MarqueeMatchups.Api.Data.Identity;
 using MarqueeMatchups.Api.Games;
 using MarqueeMatchups.Api.Matches;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using static System.Net.WebRequestMethods;
 
@@ -45,7 +46,10 @@ namespace MarqueeMatchups.Api
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
+            builder.Services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/dist";
+            });
             // repositories //
             builder.Services.AddScoped<IGameRepository,GameRepository>();
 
@@ -61,13 +65,14 @@ namespace MarqueeMatchups.Api
            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+           
             app.UseStatusCodePages(); 
             
             //cors
             app.UseCors("AllowAll");
             //
             app.UseAuthorization();
-            app.MapControllers();
+            app.MapControllers();          
             app.MapFallbackToFile("index.html");
             app.Run();
         }
