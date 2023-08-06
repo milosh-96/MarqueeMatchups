@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection.Metadata.Ecma335;
 
 namespace MarqueeMatchups.Api.Accounts
 {
-    [Route("api/accounts/[controller]")]
+    [Route("api/accounts/[controller]/{action=Login}")]
     [ApiController]
     public class LoginController : ControllerBase
     {
@@ -39,7 +40,13 @@ namespace MarqueeMatchups.Api.Accounts
                     return new JsonResult(User);
                 }
             }
-            return new JsonResult(new { message = "login failed!" });
+            return new StatusCodeResult(401);
+        }
+
+        [HttpGet]
+        public IActionResult LoginCheck()
+        {
+            return new JsonResult(new { loggedIn = _signInManager.IsSignedIn(User) });
         }
     }
 }
