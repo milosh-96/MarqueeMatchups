@@ -1,6 +1,7 @@
 using MarqueeMatchups.Api.Data;
 using MarqueeMatchups.Api.Data.DTO;
 using MarqueeMatchups.Api.Games;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -21,6 +22,7 @@ namespace MarqueeMatchups.Api.Games
             _gameRepository = gameRepository;
         }
 
+        [Authorize]
         [ProducesResponseType(typeof(IEnumerable<Game>), StatusCodes.Status200OK)]
         [HttpGet(Name = "GetGames")]
         public async Task<IActionResult> Get([FromQuery]SportValues sportId = SportValues.Football)

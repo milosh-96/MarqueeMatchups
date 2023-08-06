@@ -2,9 +2,12 @@ using MarqueeMatchups.Api.Data;
 using MarqueeMatchups.Api.Data.Identity;
 using MarqueeMatchups.Api.Games;
 using MarqueeMatchups.Api.Matches;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using static System.Net.WebRequestMethods;
 
 namespace MarqueeMatchups.Api
@@ -34,24 +37,25 @@ namespace MarqueeMatchups.Api
             var connectionString = builder.Configuration["ConnectionStrings:DefaultConnection"];
             builder.Services.AddDbContext<DataDbContext>(options =>
             {
-             options.UseNpgsql(connectionString);
+                options.UseNpgsql(connectionString);
 
             });
 
             // add identity
             builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<DataDbContext>();
-
+            builder.Services.ConfigureApplicationCookie(c =>
+            {
+                c.LoginPath = "/login";
+            });
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme);
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/dist";
-            });
+
             // repositories //
-            builder.Services.AddScoped<IGameRepository,GameRepository>();
+            builder.Services.AddScoped<IGameRepository, GameRepository>();
 
             var app = builder.Build();
 
@@ -62,17 +66,20 @@ namespace MarqueeMatchups.Api
                 app.UseSwaggerUI();
             }
 
-           
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-           
-            app.UseStatusCodePages(); 
-            
+
+            app.UseStatusCodePages();
+
             //cors
             app.UseCors("AllowAll");
             //
+
+            app.UseAuthentication();
             app.UseAuthorization();
-            app.MapControllers();          
+
+            app.MapControllers();
             app.MapFallbackToFile("index.html");
             app.Run();
         }
