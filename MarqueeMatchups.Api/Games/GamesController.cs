@@ -22,7 +22,7 @@ namespace MarqueeMatchups.Api.Games
             _gameRepository = gameRepository;
         }
 
-        [Authorize]
+        //[Authorize]
         [ProducesResponseType(typeof(IEnumerable<Game>), StatusCodes.Status200OK)]
         [HttpGet(Name = "GetGames")]
         public async Task<IActionResult> Get([FromQuery]SportValues sportId = SportValues.Football)
