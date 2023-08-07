@@ -1,4 +1,4 @@
-using MarqueeMatchups.Api.Data;
+﻿using MarqueeMatchups.Api.Data;
 using MarqueeMatchups.Api.Data.Identity;
 using MarqueeMatchups.Api.Games;
 using MarqueeMatchups.Api.Matches;
