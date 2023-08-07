@@ -29,7 +29,8 @@ namespace MarqueeMatchups.Api.Matches
             if(_dbContext.SaveChanges() < 1)
             {
                 throw new Exception("there was an error while saving!");
-            }          
+            }
+         
             return game;
         }
 

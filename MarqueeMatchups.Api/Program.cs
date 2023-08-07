@@ -31,7 +31,8 @@ namespace MarqueeMatchups.Api
                         {
                             "Content-Type"
                         });
-                        cors.AllowAnyOrigin();
+                       // cors.AllowAnyOrigin();
+                        cors.AllowCredentials();
                     });
             });
             var connectionString = builder.Configuration["ConnectionStrings:DefaultConnection"];
