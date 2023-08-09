@@ -1,6 +1,7 @@
 using MarqueeMatchups.Api.Data;
 using MarqueeMatchups.Api.Data.DTO;
 using MarqueeMatchups.Api.Games;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
