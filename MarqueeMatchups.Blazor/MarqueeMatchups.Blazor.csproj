@@ -31,4 +31,8 @@
     <None Include="compilerconfig.json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\lib\bootstrap-5.3.1\scss\**\*" CopyToPublishDirectory="Never" />
+  </ItemGroup>
+
 </Project>
