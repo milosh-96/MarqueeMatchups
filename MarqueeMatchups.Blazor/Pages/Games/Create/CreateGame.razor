@@ -1,0 +1,75 @@
+﻿@page "/games/create"
+@inject IGameRepository gameRepository;
+@using MarqueeMatchups.Core.Games;
+@attribute [Authorize]
+
+@if(CreatedSuccessfully)
+{
+    <div class="alert alert-success alert-dismissible" role="alert">
+        the game has been created succesfully!
+        <button type="button" @onclick="()=>{CreatedSuccessfully=false;}" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+<h3>CreateGame</h3>
+
+
+<EditForm OnValidSubmit="SubmitValidForm" EditContext="@editContext">
+    <div class="form-group">
+        <label>Match Name</label>
+        <InputText class="form-control" type="text" @bind-Value="FormModel.Name" />
+    </div>
+    <div class="form-group">
+        <select @bind="FormModel.SportId"  class="form-control">
+            @for(int i = 0;i < 7;i++)
+            {
+                <option value="@i">@((SportValues)@i)</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Competition</label>
+        <InputText class="form-control" type="text" @bind-Value="FormModel.Competition" />
+    </div>
+    <div>
+         <MarqueeMatchups.Blazor.Shared.Forms.DateTimePicker DateTimeChanged="HandleDateTimeChange"></MarqueeMatchups.Blazor.Shared.Forms.DateTimePicker>
+        <em>@FormModel.ScheduledAt</em>
+    </div>
+    <div>
+        <button class="btn btn-primary">Submit</button>
+    </div>
+</EditForm>
+
+@code {
+    public bool CreatedSuccessfully { get; set; } = false;
+
+    public GameDto FormModel { get; set; } = new GameDto();
+    public string DateTimeString { get; set; } = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+    private EditContext? editContext;
+
+    protected override void OnInitialized()
+    {
+        editContext = new(FormModel);
+    }
+
+    private void SubmitValidForm()
+    {
+        var newEntry = gameRepository.Create(this.FormModel);
+
+        if(newEntry != null) 
+        {
+            this.CreatedSuccessfully = true;
+            FormModel = new GameDto();
+            editContext.MarkAsUnmodified();
+            this.StateHasChanged();
+        }
+    }
+
+
+    private void HandleDateTimeChange(DateTime value)
+    {
+        this.FormModel.ScheduledAt = value.ToString("yyyy-MM-dd HH:mm");
+    }
+}

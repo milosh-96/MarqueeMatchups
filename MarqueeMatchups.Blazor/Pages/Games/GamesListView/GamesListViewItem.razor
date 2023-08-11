@@ -1,0 +1,45 @@
+﻿@using MarqueeMatchups.Core.Games;
+@if(Item != null)
+{
+    <tr>
+        <td>
+            <span class="d-md-none">
+                @Item.ScheduledAt.ToString("d.MM. HH:mm")
+            </span>
+            <span class="d-none d-md-inline">
+                @Item.ScheduledAt.ToString("d.MM.yyyy. HH:mm")
+            </span>
+        </td>
+        <td>
+            <div @onclick="ToggleDetails">
+                <strong>@Item.Name</strong>
+            </div>
+            @if (ShowDetails)
+            {
+                <div>
+                    @Item.ScheduledAt.ToString("d.MM.yyyy. HH:mm")
+            </div>
+            }
+        </td>
+        <td>@Item.Competition</td>
+
+    </tr>
+}
+else
+{
+    <tr>
+        <td>Invalid Data!</td>
+    </tr>
+}
+@code {
+    [Parameter]
+    public Game Item { get; set; }
+
+    public bool ShowDetails {get;set;} = false;
+
+    private void ToggleDetails()
+    {
+        this.ShowDetails = !this.ShowDetails;
+    }
+}
+

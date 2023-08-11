@@ -1,0 +1,12 @@
+﻿<div id="top-nav">
+    <ul class="nav justify-content-center flex-column flex-md-row">
+        <li class="nav-item">
+            <NavLink Match="NavLinkMatch.All" class="nav-link active" href="/" >Home</NavLink>
+        </li>
+        <AuthorizeView>
+            <li class="nav-item">
+                <NavLink Match="NavLinkMatch.All" class="nav-link" href="/games/create">Add new Game</NavLink>
+            </li>
+        </AuthorizeView>
+    </ul>
+</div>

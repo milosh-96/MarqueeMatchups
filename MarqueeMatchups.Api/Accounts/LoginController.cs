@@ -1,5 +1,6 @@
-﻿using MarqueeMatchups.Api.Data.Identity;
-using MarqueeMatchups.Api.Shared;
+﻿
+using MarqueeMatchups.Core.Identity;
+using MarqueeMatchups.Core.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

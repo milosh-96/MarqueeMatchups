@@ -1,4 +1,4 @@
-﻿using MarqueeMatchups.Api.Data.Identity;
+﻿using MarqueeMatchups.Core.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 

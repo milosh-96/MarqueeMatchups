@@ -1,0 +1,101 @@
+﻿<div>
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <input type="number" min="1" max="31" @bind="@Day" class="form-control" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <input type="number" min="1" max="12" @bind="@Month" class="form-control" />
+                    </div>
+                </div> <div class="col">
+                    <div class="form-group">
+                        <input type="number" min="2023" max="2040" @bind="@Year" class="form-control" />
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <input type="number" min="00" max="23" @bind="@Hour" class="form-control" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <input type="number" min="00" max="59" @bind="@Minute" class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+    [Parameter] public EventCallback<DateTime> DateTimeChanged { get; set; }
+
+    private DateTime current;
+
+    public DateTime Current
+    {
+        get { return current; }
+        set { current = value; }
+    }
+
+    private int year = DateTime.Now.Year;
+
+    public int Year
+    {
+        get { return year; }
+        set { year = value; SyncDate(); }
+    }
+    private int month = DateTime.Now.Month;
+
+    public int Month
+    {
+        get { return month; }
+        set { month = value; SyncDate(); }
+    }
+    private int day = DateTime.Now.Day;
+
+    public int Day
+    {
+        get { return day; }
+        set { day = value; SyncDate(); }
+    }
+
+    private int hour = DateTime.Now.Hour;
+
+    public int Hour
+    {
+        get { return hour; }
+        set { hour = value; SyncDate(); }
+    }
+    private int minute = DateTime.Now.Minute;
+
+    public int Minute
+    {
+        get { return minute; }
+        set { minute = value; SyncDate(); }
+    }
+
+    protected override void OnInitialized()
+    {
+        this.Current = DateTime.Now;
+        //this.Year = Current.Year;
+        //this.Month = Current.Month;
+        //this.Day = Current.Day;
+        //this.Hour = Current.Hour;
+        //this.Minute = Current.Minute;
+    }
+    private void SyncDate()
+    {
+        this.Current = new DateTime(this.Year, this.Month, this.Day, this.Hour, this.Minute, 00);
+        DateTimeChanged.InvokeAsync(this.Current);
+    }
+
+}

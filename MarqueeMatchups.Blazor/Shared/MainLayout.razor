@@ -1,0 +1,33 @@
+﻿@inherits LayoutComponentBase
+
+<PageTitle>MarqueeMatchups.Blazor</PageTitle>
+
+<div class="container page">
+    <TopNavigation></TopNavigation>
+    <Header></Header>
+
+    <div id="page">
+        <div class="row">
+            <div class="col-md-8 mx-auto frame">
+                <ErrorBoundary  @ref="errorBoundary">
+                    <ChildContent>
+                        @Body
+                    </ChildContent>
+                    <ErrorContent>
+                        <div class="alert alert-danger">There was an error! Please refresh the page or try the other page.</div>
+                    </ErrorContent>
+                </ErrorBoundary>
+            </div>
+        </div>
+    </div>
+    <Footer></Footer>
+</div>
+
+@code {
+    private ErrorBoundary? errorBoundary;
+
+    protected override void OnParametersSet()
+    {
+        errorBoundary?.Recover();
+    }
+}

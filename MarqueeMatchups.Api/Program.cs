@@ -1,16 +1,12 @@
-﻿using MarqueeMatchups.Api.Data;
-using MarqueeMatchups.Api.Data.Identity;
-using MarqueeMatchups.Api.Games;
-using MarqueeMatchups.Api.Matches;
-using MarqueeMatchups.Api.Shared;
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using MarqueeMatchups.Core.Games;
+using MarqueeMatchups.Core.Identity;
+using MarqueeMatchups.Core.Services;
+using MarqueeMatchups.Infrastructure;
+using MarqueeMatchups.Infrastructure.Games;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using static System.Net.WebRequestMethods;
 
 namespace MarqueeMatchups.Api
 {
@@ -31,22 +27,17 @@ namespace MarqueeMatchups.Api
                             );
                         cors.WithHeaders(new[]
                         {
-                            "Content-Type"
+                            "Content-Type",
+                            "Authorization"
                         });
                        // cors.AllowAnyOrigin();
                        // cors.AllowCredentials();
                     });
             });
             var connectionString = builder.Configuration["ConnectionStrings:DefaultConnection"];
-            builder.Services.AddDbContext<DataDbContext>(options =>
-            {
-                options.UseNpgsql(connectionString);
 
-            });
+            builder.Services.RegisterInfrastructure(connectionString);
 
-            // add identity
-            builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options => options.SignIn.RequireConfirmedAccount = false)
-                .AddEntityFrameworkStores<DataDbContext>();
             builder.Services.AddControllers();
 
             builder.Services.AddEndpointsApiExplorer();
@@ -71,7 +62,7 @@ namespace MarqueeMatchups.Api
 
             // repositories //
             builder.Services.AddScoped<IGameRepository, GameRepository>();
-            builder.Services.AddScoped<JwtTokenGeneratorService>();
+            builder.Services.AddScoped<IJwtTokenGeneratorService, JwtTokenGeneratorService>();
 
             var app = builder.Build();
 
