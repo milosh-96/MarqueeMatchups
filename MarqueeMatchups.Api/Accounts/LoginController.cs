@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MarqueeMatchups.Api.Accounts
 {
-    [Route("api/accounts/[controller]/{action=Login}")]
+    [Route("/accounts/[controller]/{action=Login}")]
     [ApiController]
     public class LoginController : ControllerBase
     {

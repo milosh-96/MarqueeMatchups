@@ -4,10 +4,10 @@
     <tr>
         <td>
             <span class="d-md-none">
-                @Item.ScheduledAt.ToString("d.MM. HH:mm")
+                @Item.ScheduledAtLocal.ToString("d.MM. HH:mm")
             </span>
             <span class="d-none d-md-inline">
-                @Item.ScheduledAt.ToString("d.MM.yyyy. HH:mm")
+                @Item.ScheduledAtLocal.ToString("d.MM.yyyy. HH:mm")
             </span>
         </td>
         <td>
@@ -17,7 +17,7 @@
             @if (ShowDetails)
             {
                 <div>
-                    @Item.ScheduledAt.ToString("d.MM.yyyy. HH:mm")
+                    @Item.ScheduledAtLocal.ToString("d.MM.yyyy. HH:mm")
             </div>
             }
         </td>

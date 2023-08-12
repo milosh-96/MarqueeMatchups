@@ -8,7 +8,7 @@ using System.Net;
 namespace MarqueeMatchups.Api.Games
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class GamesController : ControllerBase
     {
        

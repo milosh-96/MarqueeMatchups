@@ -66,23 +66,25 @@ namespace MarqueeMatchups.Infrastructure.Games
             return await this._dbContext.Set<Game>().Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
-        public ICollection<Game> GetFutureGames()
+        // this query will keep matches that are started no more than 5 hours ago //
+        private IQueryable<Game> GetFutureGamesQuery()
         {
             return this._dbContext.Set<Game>()
-                .Where(x => x.ScheduledAt > DateTimeOffset.UtcNow)
-                .ToList();
+                .Where(x => (x.ScheduledAt - DateTimeOffset.UtcNow).TotalHours > -5)
+                .OrderBy(x => x.ScheduledAt);
+        } 
+        public ICollection<Game> GetFutureGames()
+        {
+            return GetFutureGamesQuery().ToList();
         }
         public async Task<ICollection<Game>> GetFutureGamesAsync()
         {
-            return await this._dbContext.Set<Game>()
-                .Where(x=>x.ScheduledAt > DateTimeOffset.UtcNow).ToListAsync();
+            return await GetFutureGamesQuery().ToListAsync();
         }
 
         public async Task<ICollection<Game>> GetFutureGamesBySportAsync(SportValues sportId = SportValues.Football)
         {
-            return await this._dbContext.Set<Game>()
-                .Where(x => x.SportId == (int)sportId)
-                .Where(x => x.ScheduledAt > DateTimeOffset.UtcNow)
+            return await GetFutureGamesQuery().Where(x => x.SportId == (int)sportId)
                 .ToListAsync();
         }
 

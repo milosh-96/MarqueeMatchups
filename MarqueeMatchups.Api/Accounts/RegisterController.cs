@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MarqueeMatchups.Api.Accounts
 {
         [ApiController]
-        [Route("api/accounts/[controller]")]
+        [Route("/accounts/[controller]")]
     public class RegisterController : ControllerBase
     {
 
