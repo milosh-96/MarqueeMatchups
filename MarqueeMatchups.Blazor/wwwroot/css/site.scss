@@ -71,19 +71,17 @@ html,body {
     font-family: 'Roboto';
     text-align: center;
     animation: blinking 1s ease-in infinite;
-    > h1
-
-{
+    > h1 {
     width: 100%;
     border-top: 4px solid #000;
     border-bottom: 4px solid #000;
-}
+    outline: none;
+    }
 
-> a {
-    color: inherit;
-}
-
-}
+    > a {
+        color: inherit;
+    }
+ }
 
 @keyframes blinking {
     0% {
