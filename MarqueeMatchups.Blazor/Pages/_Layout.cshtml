@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Components.Web
 @namespace MarqueeMatchups.Blazor.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-
+@inject IConfiguration config;
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +12,20 @@
     <link href="css/site.css" rel="stylesheet" />
     <link href="MarqueeMatchups.Blazor.styles.css" rel="stylesheet" />
     <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+
+    <environment include="Production">
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=@config["Analytics:GoogleAnalyticsStreamId"]"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+
+            gtag('config', '@config["Analytics:GoogleAnalyticsStreamId"]');
+        </script>
+    </environment>
+   
+
 </head>
 <body>
     @RenderBody()
